@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: swift test
+      - name: Build universal app
+        run: ./build.sh
+      - name: Check bundle size
+        run: |
+          kb=$(du -sk build/DuskBar.app | cut -f1)
+          echo "bundle: ${kb} KB"
+          [ "$kb" -le 700 ]

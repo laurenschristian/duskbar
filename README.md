@@ -153,6 +153,7 @@ cd duskbar
 | `./build.sh install` | Builds, installs to `/Applications`, and launches |
 | `./build.sh release` | Builds `build/DuskBar-v<version>.dmg` and prints its SHA-256 |
 | `./build.sh test` | Runs the unit tests, then the perf gates on the installed app |
+| `./build.sh publish X.Y.Z` | Bumps the version, tags, creates the GitHub release and updates the Homebrew cask |
 | `swift test` | Unit tests only |
 | `swift scripts/make-icon.swift` | Regenerates `icon.png` and `Resources/AppIcon.icns` |
 
