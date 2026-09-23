@@ -44,7 +44,6 @@ Measured on macOS 26, M3 Max:
 - **Evening extras.** Dark Mode at sunset, backlight and keyboard dimming at night, bedtime reminders.
 - **Control.** A temperature slider in the menu, global hotkeys, and a `duskbar://` URL scheme for Shortcuts and Raycast.
 - **Safety.** Warns when another app changes screen color, when Night Shift is on, and for displays that ignore color tables.
-- **f.lux import.** On first launch, DuskBar copies your f.lux temperatures and wake time.
 
 ## Requirements
 
@@ -68,7 +67,7 @@ xattr -dr com.apple.quarantine /Applications/DuskBar.app
 > [!NOTE]
 > DuskBar is not notarized by Apple yet, so Gatekeeper blocks the first launch. The `xattr` command removes the download quarantine flag.
 
-If f.lux is running, quit it first. Two apps that set screen color fight each other.
+Quit other screen color apps first. Two apps that set screen color fight each other.
 
 ## Usage
 
@@ -124,7 +123,7 @@ The location stays on your Mac. With Weather on, DuskBar sends the location roun
 
 ## Troubleshooting
 
-- **Another app is changing screen color.** f.lux, Lunar, BetterDisplay, MonitorControl or Night Shift also write the display color table. Quit the other app or turn off its color feature.
+- **Another app is changing screen color.** Other color apps (Lunar, BetterDisplay, MonitorControl) or Night Shift also write the display color table. Quit the other app or turn off its color feature.
 - **Night Shift is on.** Night Shift and DuskBar stack, so the screen gets twice as warm. Turn off Night Shift in System Settings > Displays.
 - **Display not supported.** Sidecar, AirPlay and DisplayLink displays ignore color tables.
 - **M5 Pro and M5 Max.** On macOS 26.3.1 and later, macOS ignores color table changes on these chips. This affects every app of this type. See [Apple forum thread 819331](https://developer.apple.com/forums/thread/819331).
