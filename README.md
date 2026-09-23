@@ -17,19 +17,19 @@
 
 ## Overview
 
-DuskBar replaces f.lux. It follows the sun's elevation at your location, the light in your room and, if you want, the clouds. It is plain AppKit with no dependencies. It does no work between color changes: it computes when the next change starts and sleeps until then.
+DuskBar follows the sun's elevation at your location, the light in your room and, if you want, the clouds. It is plain AppKit with no dependencies. It does no work between color changes: it computes when the next change starts and sleeps until then.
 
 ## Performance
 
 Measured on macOS 26, M3 Max:
 
-| Metric | DuskBar 1.0.0 | f.lux 42.2 |
-| --- | --- | --- |
-| Memory footprint | 11 MB | 85 MB |
-| Idle CPU | 0.0% | 0.2% |
-| Idle wakeups | 0 per minute | |
-| App bundle | 632 KB (universal) | 3.1 MB |
-| Network | None unless Weather is on | Update checks |
+| Metric | DuskBar 1.0.0 |
+| --- | --- |
+| Memory footprint | 11 MB |
+| Idle CPU | 0.0% |
+| Idle wakeups | 0 per minute |
+| App bundle | 632 KB (universal) |
+| Network | None unless Weather is on |
 
 ## Features
 
