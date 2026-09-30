@@ -19,7 +19,7 @@ if [ "$1" = publish ]; then
   /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString $NEW" -c "Set CFBundleVersion $BUILD" Info.plist
   sed -i '' "s/DuskBar [0-9.]* |/DuskBar $NEW |/" README.md
   git commit -qam "chore: release $NEW"
-  git tag "v$NEW"
+  git tag -a "v$NEW" -m "DuskBar $NEW"
   git push -q --follow-tags
   "$0" release
   gh release create "v$NEW" "build/DuskBar-v$NEW.dmg" --title "DuskBar $NEW" --generate-notes
