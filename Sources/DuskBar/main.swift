@@ -329,13 +329,13 @@ final class DuskBar: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNoti
             guard let current = Private.brightness(id) else { continue }
             if let last = backlightSet[id], abs(current - last) > 0.02 { backlightManual.insert(id) }
             if dark == 0 {
-                if !backlightManual.contains(id), let base = backlightBase[id] { Private.setBrightness(id, base) }
+                if !backlightManual.contains(id), let base = backlightBase[id], base > 0.01 { Private.setBrightness(id, base) }
                 backlightBase[id] = nil
                 backlightSet[id] = nil
                 backlightManual.remove(id)
                 continue
             }
-            if backlightManual.contains(id) { continue }
+            if backlightManual.contains(id) || (backlightBase[id] == nil && current < 0.01) { continue }
             let base = backlightBase[id] ?? current
             backlightBase[id] = base
             let v = base * factor
@@ -345,7 +345,7 @@ final class DuskBar: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNoti
     }
 
     private func restoreBacklight() {
-        for (id, base) in backlightBase where !backlightManual.contains(id) { Private.setBrightness(id, base) }
+        for (id, base) in backlightBase where !backlightManual.contains(id) && base > 0.01 { Private.setBrightness(id, base) }
         backlightBase.removeAll()
         backlightSet.removeAll()
         backlightManual.removeAll()
@@ -353,14 +353,11 @@ final class DuskBar: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNoti
 
     private func applyKeyboard(_ dark: Double) {
         guard keyboardOn, let current = Private.keyboardBrightness else { return restoreKeyboard() }
-        if let last = keyboardSet, abs(current - last) > 0.02 { keyboardManual = true }
-        if dark == 0 {
-            restoreKeyboard()
-            return
-        }
-        if keyboardManual { return }
-        // An off or suppressed backlight reads 0; saving that as the base turns the keyboard off for good on restore.
-        guard keyboardBase != nil || current > 0.01 else { return }
+        // Idle dimming and bright-room suppression read 0: not a user change, and not a level to save or dim from.
+        let lit = current > 0.01
+        if lit, let last = keyboardSet, abs(current - last) > 0.02 { keyboardManual = true }
+        if dark == 0 { return restoreKeyboard() }
+        guard !keyboardManual, lit else { return }
         let base = keyboardBase ?? current
         keyboardBase = base
         let v = base * Float(1 - 0.7 * dark)
