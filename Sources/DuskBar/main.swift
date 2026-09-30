@@ -359,6 +359,8 @@ final class DuskBar: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNoti
             return
         }
         if keyboardManual { return }
+        // An off or suppressed backlight reads 0; saving that as the base turns the keyboard off for good on restore.
+        guard keyboardBase != nil || current > 0.01 else { return }
         let base = keyboardBase ?? current
         keyboardBase = base
         let v = base * Float(1 - 0.7 * dark)
@@ -367,7 +369,7 @@ final class DuskBar: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNoti
     }
 
     private func restoreKeyboard() {
-        if !keyboardManual, let base = keyboardBase { Private.keyboardBrightness = base }
+        if !keyboardManual, let base = keyboardBase, base > 0.01 { Private.keyboardBrightness = base }
         keyboardBase = nil
         keyboardSet = nil
         keyboardManual = false
