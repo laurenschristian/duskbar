@@ -23,7 +23,7 @@ DuskBar follows the sun's elevation at your location, the light in your room and
 
 Measured on macOS 26, M3 Max:
 
-| Metric | DuskBar 1.0.1 |
+| Metric | DuskBar 1.0.2 |
 | --- | --- |
 | Memory footprint | 11 MB |
 | Idle CPU | 0.0% |
