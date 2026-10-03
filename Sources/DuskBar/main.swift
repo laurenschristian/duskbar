@@ -426,11 +426,18 @@ final class DuskBar: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNoti
 
     private func checkFrontmost() {
         let app = NSWorkspace.shared.frontmostApplication
+        // Overlays like screenshot tools briefly take focus, some switching to .regular; keep the state of the app underneath.
+        if let app, app.activationPolicy != .regular || isAgent(app) { return }
         var paused = app?.bundleIdentifier.map(pausedApps.contains) ?? false
         if !paused, fullscreenPause, let pid = app?.processIdentifier { paused = isFullscreen(pid) }
         guard paused != appPaused else { return }
         appPaused = paused
         refresh(fade: 1)
+    }
+
+    private func isAgent(_ app: NSRunningApplication) -> Bool {
+        guard let url = app.bundleURL, let info = Bundle(url: url)?.infoDictionary else { return false }
+        return info["LSUIElement"] as? Bool == true || info["LSBackgroundOnly"] as? Bool == true
     }
 
     private func isFullscreen(_ pid: pid_t) -> Bool {
